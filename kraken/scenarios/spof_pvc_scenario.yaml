@@ -1,0 +1,37 @@
+log_path: /home/ubuntu/versatstcrm
+name: test25
+DB ip: 10.203.1.64
+DB port:  3306 
+kind: node_down
+times: 2
+pvc: /kubernetes/res_file/pvctest.yaml
+vip: vip1
+linstor_controller: g_linstor
+spof_scenario:
+  down_switch:
+    ip: 10.203.1.2
+    port:  eth-0-22  
+  down_interface_host:
+    hostname: root
+    port: 22
+    public_ip: 10.203.1.72
+    password: password
+    interface: ens160
+  down_host:
+    hostname: root
+    port: 22
+    public_ip: 10.203.1.72
+    password: password
+versaplx:
+- hostname: root
+  public_ip: 10.203.1.209
+  port:   22 
+  password:     Feixi@123 
+- hostname: root
+  public_ip: 10.203.1.210
+  port:  22 
+  password: Feixi@123
+- hostname: root
+  public_ip: 10.203.1.72
+  port:  22 
+  password: password
