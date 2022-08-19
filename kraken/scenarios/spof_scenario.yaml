@@ -1,0 +1,37 @@
+log_path: /home/ubuntu/versatstcrm
+kind: interface_down
+times: 3
+spof_scenario:
+  down_switch:
+    ip: 10.203.1.202
+    port: eth-0-48
+  down_interface_host:
+    hostname: vplx2kn1
+    port: 22
+    public_ip: 10.203.1.14
+    password: Feixi@171101
+    interface: enp3s0f1
+  down_host:
+    hostname: vplx2kn1
+    port: null
+    public_ip: 10.203.1.14
+    password: Feixi@171101
+    bmc_ip: 10.203.1.121
+    user: admin
+    bmc_password: admin
+versaplx:
+- hostname: vplx2kn1
+  port:  22 
+  public_ip: 10.203.1.14
+  password: Feixi@171101
+- hostname: vplx2kn2
+  port:  22 
+  public_ip: 10.203.1.13
+  password: Feixi@171101
+- hostname: ubuntu
+  port:  22 
+  public_ip: 10.203.1.165
+  password:   Feixi@123 
+DB ip: 10.203.1.64
+DB port:  3306 
+name: 719yantest3
