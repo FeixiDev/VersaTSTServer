@@ -14,6 +14,7 @@ from performance_exc import test_getconfig
 from performance_exc import test_databse
 from kraken.storage import spoc_yaml_config
 from kraken.storage import database_reliability
+from upload_file_fun import data_processing
 import kraken.kraken.spof_scenarios.setup as spof_scenarios
 import sys
 import os
@@ -327,4 +328,41 @@ class randomrwShowMBPS(views.MethodView):
             obj_da = test_databse.Get_data_info(db_ip,db_port,table_name)
             data = obj_da.get_mbps_data_randrw()
             return cors_data(data)
+
+class spofScenarioUpload(views.MethodView):
+    def get(self):
+        spof_scenario_yaml = request.files['file']
+        if spof_scenario_yaml.filename != '':
+            pass
+
+class spofpvcScenarioUpload(views.MethodView):
+    def get(self):
+        spof_pvc_scenario_yaml = request.files['file']
+        if spof_pvc_scenario_yaml.filename != '':
+            pass
+
+class selfdefinedScenarioUpload(views.MethodView):
+    def get(self):
+        self_defined_scenario_yaml = request.files['file']
+        if self_defined_scenario_yaml.filename != '':
+            pass
+
+class videoScenarioUpload(views.MethodView):
+    def get(self):
+        video_scenario_yaml = request.files['file']
+        if video_scenario_yaml.filename != '':
+
+           pass
+
+class seqrwScenarioUpload(views.MethodView):
+    def get(self):
+        Seq_rw_scenario_yaml = request.files['file']
+        if Seq_rw_scenario_yaml.filename != '':
+            pass
+
+class randomrwScenarioUpload(views.MethodView):
+    def get(self):
+        random_rw_scenario_yaml = request.files['file']
+        if random_rw_scenario_yaml.filename != '':
+            pass
 
