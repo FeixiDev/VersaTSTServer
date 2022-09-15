@@ -22,6 +22,8 @@ import yaml
 
 
 
+UPLOAD_FOLDER = '../../upload_file_fun'
+
 def cors_data(datadict): #解决跨域问题
     response = make_response(jsonify(datadict))
     response.headers['Access-Control-Allow-Origin'] = '*'
@@ -331,38 +333,49 @@ class randomrwShowMBPS(views.MethodView):
 
 class spofScenarioUpload(views.MethodView):
     def get(self):
-        spof_scenario_yaml = request.files['file']
-        if spof_scenario_yaml.filename != '':
-            pass
+        if request.method =='POST':
+            spof_scenario_yaml = request.files['file']
+            if spof_scenario_yaml.filename != '':
+                spof_scenario_yaml.save(UPLOAD_FOLDER)
+                file_path = sys.path[0] + '/upload_file_fun/spof_scenario.yaml'
+                data_processing.UpdateYaml.update_spof_scenario(file_path)
+                return cors_data('SUCCESS')
 
 class spofpvcScenarioUpload(views.MethodView):
     def get(self):
         spof_pvc_scenario_yaml = request.files['file']
         if spof_pvc_scenario_yaml.filename != '':
-            pass
+            spof_pvc_scenario_yaml.save(UPLOAD_FOLDER)
+            file_path = sys.path[0] + '/upload_file_fun/spof_pvc_scenario.yaml'
+            data_processing.UpdateYaml.update_spof_pvc_scenario(file_path)
+            return cors_data('SUCCESS')
+
 
 class selfdefinedScenarioUpload(views.MethodView):
     def get(self):
         self_defined_scenario_yaml = request.files['file']
         if self_defined_scenario_yaml.filename != '':
-            pass
+            self_defined_scenario_yaml.save(UPLOAD_FOLDER)
+            return cors_data('SUCCESS')
 
 class videoScenarioUpload(views.MethodView):
     def get(self):
         video_scenario_yaml = request.files['file']
         if video_scenario_yaml.filename != '':
-
-           pass
+            video_scenario_yaml.save(UPLOAD_FOLDER)
+            return cors_data('SUCCESS')
 
 class seqrwScenarioUpload(views.MethodView):
     def get(self):
         Seq_rw_scenario_yaml = request.files['file']
         if Seq_rw_scenario_yaml.filename != '':
-            pass
+            Seq_rw_scenario_yaml.save(UPLOAD_FOLDER)
+            return cors_data('SUCCESS')
 
 class randomrwScenarioUpload(views.MethodView):
     def get(self):
         random_rw_scenario_yaml = request.files['file']
         if random_rw_scenario_yaml.filename != '':
-            pass
+            random_rw_scenario_yaml.save(UPLOAD_FOLDER)
+            return cors_data('SUCCESS')
 
