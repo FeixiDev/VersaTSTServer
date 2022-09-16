@@ -343,39 +343,44 @@ class spofScenarioUpload(views.MethodView):
 
 class spofpvcScenarioUpload(views.MethodView):
     def get(self):
-        spof_pvc_scenario_yaml = request.files['file']
-        if spof_pvc_scenario_yaml.filename != '':
-            spof_pvc_scenario_yaml.save(UPLOAD_FOLDER)
-            file_path = sys.path[0] + '/upload_file_fun/spof_pvc_scenario.yaml'
-            data_processing.UpdateYaml.update_spof_pvc_scenario(file_path)
-            return cors_data('SUCCESS')
+        if request.method == 'POST':
+            spof_pvc_scenario_yaml = request.files['file']
+            if spof_pvc_scenario_yaml.filename != '':
+                spof_pvc_scenario_yaml.save(UPLOAD_FOLDER)
+                file_path = sys.path[0] + '/upload_file_fun/spof_pvc_scenario.yaml'
+                data_processing.UpdateYaml.update_spof_pvc_scenario(file_path)
+                return cors_data('SUCCESS')
 
 
 class selfdefinedScenarioUpload(views.MethodView):
     def get(self):
-        self_defined_scenario_yaml = request.files['file']
-        if self_defined_scenario_yaml.filename != '':
-            self_defined_scenario_yaml.save(UPLOAD_FOLDER)
-            return cors_data('SUCCESS')
+        if request.method == 'POST':
+            self_defined_scenario_yaml = request.files['file']
+            if self_defined_scenario_yaml.filename != '':
+                self_defined_scenario_yaml.save(UPLOAD_FOLDER)
+                return cors_data('SUCCESS')
 
 class videoScenarioUpload(views.MethodView):
     def get(self):
-        video_scenario_yaml = request.files['file']
-        if video_scenario_yaml.filename != '':
-            video_scenario_yaml.save(UPLOAD_FOLDER)
-            return cors_data('SUCCESS')
+        if request.method == 'POST':
+            video_scenario_yaml = request.files['file']
+            if video_scenario_yaml.filename != '':
+                video_scenario_yaml.save(UPLOAD_FOLDER)
+                return cors_data('SUCCESS')
 
 class seqrwScenarioUpload(views.MethodView):
     def get(self):
-        Seq_rw_scenario_yaml = request.files['file']
-        if Seq_rw_scenario_yaml.filename != '':
-            Seq_rw_scenario_yaml.save(UPLOAD_FOLDER)
-            return cors_data('SUCCESS')
+        if request.method == 'POST':
+            Seq_rw_scenario_yaml = request.files['file']
+            if Seq_rw_scenario_yaml.filename != '':
+                Seq_rw_scenario_yaml.save(UPLOAD_FOLDER)
+                return cors_data('SUCCESS')
 
 class randomrwScenarioUpload(views.MethodView):
     def get(self):
-        random_rw_scenario_yaml = request.files['file']
-        if random_rw_scenario_yaml.filename != '':
-            random_rw_scenario_yaml.save(UPLOAD_FOLDER)
-            return cors_data('SUCCESS')
+        if request.method == 'POST':
+            random_rw_scenario_yaml = request.files['file']
+            if random_rw_scenario_yaml.filename != '':
+                random_rw_scenario_yaml.save(UPLOAD_FOLDER)
+                return cors_data('SUCCESS')
 
