@@ -337,7 +337,7 @@ class spofScenarioUpload(views.MethodView):
             spof_scenario_yaml = request.files['file']
             if spof_scenario_yaml.filename != '':
                 spof_scenario_yaml.save(UPLOAD_FOLDER)
-                file_path = sys.path[0] + '/upload_file_fun/spof_scenario.yaml'
+                file_path = sys.path[1] + '/upload_file_fun/spof_scenario.yaml'
                 data_processing.UpdateYaml.update_spof_scenario(file_path)
                 return cors_data('SUCCESS')
 
@@ -347,7 +347,7 @@ class spofpvcScenarioUpload(views.MethodView):
             spof_pvc_scenario_yaml = request.files['file']
             if spof_pvc_scenario_yaml.filename != '':
                 spof_pvc_scenario_yaml.save(UPLOAD_FOLDER)
-                file_path = sys.path[0] + '/upload_file_fun/spof_pvc_scenario.yaml'
+                file_path = sys.path[1] + '/upload_file_fun/spof_pvc_scenario.yaml'
                 data_processing.UpdateYaml.update_spof_pvc_scenario(file_path)
                 return cors_data('SUCCESS')
 
