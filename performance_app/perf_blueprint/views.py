@@ -41,3 +41,11 @@ per_blueprint.add_url_rule('/performance/video/show/write/mbps', view_func=model
 
 per_blueprint.add_url_rule('/performance/random-rw/show/read/iops', view_func=model.randomrwShowIOPS.as_view('random-rw-iops'))
 per_blueprint.add_url_rule('/performance/random-rw/show/read/mbps', view_func=model.randomrwShowMBPS.as_view('random-rw-mbps'))
+
+per_blueprint.add_url_rule('/reliability/spof/upload', view_func=model.spofScenarioUpload.as_view('spof-upload'))
+per_blueprint.add_url_rule('/reliability/spof-pvc/upload', view_func=model.spofpvcScenarioUpload.as_view('spof-pvc-upload'))
+
+per_blueprint.add_url_rule('/performance/self-defined/upload', view_func=model.selfdefinedScenarioUpload.as_view('self-defined-upload'))
+per_blueprint.add_url_rule('/performance/seq-rw/upload', view_func=model.seqrwScenarioUpload.as_view('seq-rw-upload'))
+per_blueprint.add_url_rule('/performance/video/upload', view_func=model.videoScenarioUpload.as_view('video-upload'))
+per_blueprint.add_url_rule('/performance/random-rw/upload', view_func=model.randomrwScenarioUpload.as_view('random-rw-upload'))
