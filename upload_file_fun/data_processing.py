@@ -17,11 +17,11 @@ def update_spof_scenario(file_path):
                                  'volumeMode': 'Block'
                                  }
                         }
-    with open(sys.path[0] + '/kraken/kraken/kubernetes/res_file/spof_blkpvc.yaml', 'w', encoding='utf-8') as sb:
+    with open(sys.path[0] + '/kraken/kraken/kubernetes/res_file/scenarios_pvc.yaml', 'w', encoding='utf-8') as sb:
         yaml.dump(yaml_config1, sb)
         t1_data.pop('pvc_size')
         t1_data.pop('storageclass_name')
-        with open(sys.path[1] + '/kraken/scenarios/spof_scenario.yaml', 'w', encoding='utf-8') as ss:
+        with open(sys.path[0] + '/kraken/scenarios/spof_scenario.yaml', 'w', encoding='utf-8') as ss:
             yaml.dump(t1_data, ss)
 
 def update_spof_pvc_scenario(file_path):
@@ -37,9 +37,9 @@ def update_spof_pvc_scenario(file_path):
                                  'storageclass_name': storageclass_name,
                                  }
                         }
-    with open(sys.path[0] + '/kraken/kraken/kubernetes/res_file/scenarios_pvc.yaml', 'w', encoding='utf-8') as sp:
+    with open(sys.path[0] + '/kraken/kraken/kubernetes/res_file/spof_blkpvc.yaml', 'w', encoding='utf-8') as sp:
         yaml.dump(yaml_config2, sp)
         t2_data.pop('pvc_size')
         t2_data.pop('storageclass_name')
-        with open(sys.path[1] + '/kraken/scenarios/spof_pvc_scenario.yaml', 'w', encoding='utf-8') as sps:
+        with open(sys.path[0] + '/kraken/scenarios/spof_pvc_scenario.yaml', 'w', encoding='utf-8') as sps:
             yaml.dump(t2_data, sps)
