@@ -15,6 +15,7 @@ from kraken.sshv import utils as utils
 from kraken.sshv import log as log
 from kraken.sshv import control as control
 from kraken.sshv import k8s_connect as k8s_connect
+from kraken.sshv import send_email
 
 #import kraken.cerberus.setup as cerberus
 #import kraken.kubernetes.client as kubecli
@@ -60,7 +61,9 @@ def run(scenarios_list, config):
 	crm_location_node = versa_con.get_glinstor_location_node()
 	pvc_resoure = kubecli.create_pvc(lins_blkpvc_file)
 	time.sleep(20)
-	
+	with open(sys.path[0] + '/kraken/scenarios/spof_scenario.yaml', 'r', encoding='utf-8') as sps:
+		data = yaml.full_load(sps)
+		mail_receiver = data.get['mail_receive']
 	with open(path.join(path.dirname(__file__), gomet_pod_file)) as f:
 		gomet_pod_config = yaml.safe_load(f)
 		metadata_config = gomet_pod_config["metadata"]
@@ -115,6 +118,8 @@ def run(scenarios_list, config):
 				versa_con.change_node_interface(True)
 			elif kind == "switch_port_down":
 				versa_con.change_switch_port(True)
+				send_email.STMPEmail(mail_receiver,
+									 message2='VersaTST test interrupted，Single fault have not been done before go-meter finish writing…').send_fail()
 			utils.prt_log('', "Single fault have not been done before go-meter finish writing...",0)
 			nowtime = clear_pvc_and_pod(go_meter_pod,namespace,lins_blkpvc_file)
 			return left_times,nowtime
@@ -124,6 +129,8 @@ def run(scenarios_list, config):
 				versa_con.change_node_interface(True)
 			elif kind == "switch_port_down":
 				versa_con.change_switch_port(True)
+			send_email.STMPEmail(mail_receiver,
+								 message2='VersaTST test interrupted，Go meter write failed').send_fail()
 			utils.prt_log('', "Go meter write failed",0)
 			versa_con.get_log(down)
 			nowtime = clear_pvc_and_pod(go_meter_pod,namespace,lins_blkpvc_file)
@@ -150,6 +157,8 @@ def run(scenarios_list, config):
 		utils.prt_log('', "\n" + str(response),0)
 
 		if not "Finish" in response:
+			send_email.STMPEmail(mail_receiver,
+								 message2='VersaTST test interrupted，Go meter write failed').send_fail()
 			utils.prt_log('', "Go meter compare failed",0)
 			if kind == "interface_down":
 				versa_con.change_node_interface(True)
@@ -183,7 +192,8 @@ def run(scenarios_list, config):
 		utils.prt_log('', "Go-meter finish writing, write time: %ds" % write_time,0)
 		versa_con.check_if_on(kind)
 		if not result_down or write_time<25:
-
+			send_email.STMPEmail(mail_receiver,
+								 message2='VersaTST test interrupted，Single fault have not been fixed before go-meter finish writing').send_fail()
 			utils.prt_log('', "Single fault have not been fixed before go-meter finish writing...",0)
 			nowtime = clear_pvc_and_pod(go_meter_pod,namespace,lins_blkpvc_file)
 			return left_times,nowtime
@@ -220,6 +230,8 @@ def run(scenarios_list, config):
 			err = versa_con.move_back_crm_res(crm_location_node)
 			if err:
 				utils.prt_log('', "Moved back crm res failed...",0)
+				send_email.STMPEmail(mail_receiver,
+									 message2='VersaTST test interrupted，Moved back crm res failed…').send_fail()
 				versa_con.get_log(down)
 				nowtime = clear_pvc_and_pod(go_meter_pod,namespace,lins_blkpvc_file)
 				return left_times,nowtime

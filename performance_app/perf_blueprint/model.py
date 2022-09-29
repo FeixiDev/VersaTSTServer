@@ -15,6 +15,7 @@ from performance_exc import test_databse
 from kraken.storage import spoc_yaml_config
 from kraken.storage import database_reliability
 from upload_file_fun import data_processing
+from kraken.sshv import send_email
 import kraken.kraken.spof_scenarios.setup as spof_scenarios
 import sys
 import os
@@ -105,6 +106,7 @@ class spofPvcCreate(views.MethodView):
     def get(self):
         data_all = get_request_data()
         data = eval(data_all['data'])
+        mail_receiver =','.join(data['mail_receiver'])
         # utils._init()
         # logger = log.Log()
         # utils.set_logger(logger)
@@ -112,6 +114,7 @@ class spofPvcCreate(views.MethodView):
         spoc_yaml_config.Handle_spof_yaml(data, '/kraken/scenarios/spof_pvc_scenario.yaml')
         file_path = sys.path[0] + '/kraken/config/config_spof_pvc.yaml'
         spoc_yaml_config.test_spoc_pvc(file_path)
+        send_email.STMPEmail(mail_receiver,message1='VersaTST spoc_pvc test has been completed').send_succeed()
         return cors_data('SUCCESS')
 
 
@@ -129,6 +132,7 @@ class spofCreate(views.MethodView):
         pvc_size = dict_data["pvc_size"]
         kind = dict_data["test_action"]
         runs = dict_data["test_times"]
+        mail_receiver = ','.join(dict_data['mail_receiver'])
         config_list = [storageClassName, pvc_size, kind, runs]
         print('config_listttttttttttt', config_list)
         cfg = sys.path[0] + '/kraken/config/config_spof.yaml'
@@ -161,6 +165,7 @@ class spofCreate(views.MethodView):
         database_reliability.Write_database_reliability(DB_ip, DB_port, 'spof_scenarise', kind, result, Exact_times,
                                                         runs, Test_name)
         print('doneeeeeeeeeeeeeeeeeeee')
+        send_email.STMPEmail(mail_receiver, message1='VersaTST spoc test has been completed').send_succeed()
         return cors_data(result)
 
 

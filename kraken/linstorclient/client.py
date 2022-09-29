@@ -3,11 +3,18 @@ import logging
 import sys
 import time
 import http
+import yaml
+from kraken.sshv import send_email
 
+with open(sys.path[0] + '/kraken/scenarios/spof_pvc_scenario.yaml', 'r', encoding='utf-8') as sps:
+    data = yaml.full_load(sps)
+    mail_receiver = data.get['mail_receive']
 try:
     import linstor
 except ImportError:
     logging.error("linstor is not installed")
+    send_email.STMPEmail(mail_receiver,
+                         message2='VersaTST test interrupted，LINSTOR is not installed').send_fail()
     sys.exit(1)
 
 class LinstorClientError(Exception):
@@ -53,6 +60,8 @@ def initialize_clients():
         cli = get_linstor_client()
     except LinstorClientError as e:
         logging.error("Failed to initialize kubernetes client: %s\n" % e)
+        send_email.STMPEmail(mail_receiver,
+                             message2='VersaTST test interrupted，LINSTOR is not installed').send_fail()
         sys.exit(1)
 
 def get_replies_state(replies):

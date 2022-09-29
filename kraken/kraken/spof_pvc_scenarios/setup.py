@@ -11,6 +11,7 @@ from kraken.sshv import log as log
 from kraken.sshv import control as control
 from kraken.linstorclient import client as linstorcli
 from kraken.storage import database_reliability
+from kraken.sshv import send_email
 # from kraken.kraken.spof_pvc_scenarios import test_database_reliability
 
 #import kraken.kubernetes.client as kubecli
@@ -35,6 +36,10 @@ class TimeoutExpired(Exception):
 def run(scenarios_list, config):
     global STOP_FLAG
     global PVC_ID
+
+    with open(sys.path[0] + '/kraken/scenarios/spof_pvc_scenario.yaml', 'r', encoding='utf-8') as sps:
+        data = yaml.full_load(sps)
+        mail_receiver = data.get['mail_receive']
 
     # 检查 namespace 中是否为空
     # if kubecli.list_pvc(namespace=NAME_SPACE):
@@ -123,6 +128,7 @@ def run(scenarios_list, config):
         if STOP_CREATE:
             print('resource status is not passed, exit')
             logging.info("resource status is not passed, exit")
+            send_email.STMPEmail(mail_receiver,message2='VersaTST test interrupted，Cannot read the kubeconfig file, please check').send_fail()
             database_reliability.Write_database_reliability(DB_ip,DB_port,'spof_pvc',Test_action,'fail',times,Test_times,Test_name)
             return
 
