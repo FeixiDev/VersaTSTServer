@@ -13,7 +13,7 @@ def update_spof_scenario(file_path):
                         'metadata': {'name': 'spofblkpvc'},
                         'spec': {'accessModes': ['ReadWriteMany'],
                                  'resources': {'requests': {'storage': pvc_size}},
-                                 'storageclass_name': storageclass_name,
+                                 'storageClassName': storageclass_name,
                                  'volumeMode': 'Block'
                                  }
                         }
@@ -34,7 +34,8 @@ def update_spof_pvc_scenario(file_path):
                         'metadata': {'name': 'spofblkpvc'},
                         'spec': {'accessModes': ['ReadWriteMany'],
                                  'resources': {'requests': {'storage': pvc_size}},
-                                 'storageclass_name': storageclass_name,
+                                 'storageClassName': storageclass_name,
+                                 '#volumeMode': 'Block'
                                  }
                         }
     with open(sys.path[0] + '/kraken/kraken/kubernetes/res_file/spof_blkpvc.yaml', 'w', encoding='utf-8') as sp:
