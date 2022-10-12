@@ -6,62 +6,62 @@ class STMPEmail(object):
 
     def __init__(self,receivers,
                  message1 = '“Congratulations, the test passes”',
-                 message2 = '“Sorry, there was a error with the test and the test exited”'):
+                 message2 = '“Sorry, There was a error with the test and the test exited”'):
         self.mail_host = 'smtp.exmail.qq.com'
         self.mail_user = 'github.host@feixitek.com'
         self.mail_pass = 'Githubhost1234'
         self.sender = 'github.host@feixitek.com'
+        self.receivers = receivers.strip(',').split(',')
         self.receivers = receivers
         self.message1 = message1
         self.message2 = message2
 
 
-    def connect_stmp(self):
+
+    def send_succeed(self):
+
+        message = MIMEText(self.message1, 'plain', 'utf-8')
+        message['From'] = Header("发送方", 'utf-8')
+        message['To'] = Header("接收方", 'utf-8')
+
+        subject = 'The results of test'
+        message['Subject'] = Header(subject, 'utf-8')
         try:
             smtpObj = smtplib.SMTP()
             smtpObj.connect(self.mail_host, 25)
-        except:
-            print("Failed to connect smtp server!")
-            return False
-
-        try:
             smtpObj.login(self.mail_user, self.mail_pass)
-        except:
-            print("User or password is wrong")
-            return False
+            smtpObj.sendmail(self.sender, self.receivers, message.as_string())
+            smtpObj.quit()
 
-        return smtpObj
-
-
+            mess = "The message was sent successfully"
+        except smtplib.SMTPException:
 
 
+            mess = "Error,Message failed to send"
 
-    def send_succeed(self):
-        smtpObj = self.connect_stmp()
-        message = MIMEText(self.message1, 'plain', 'utf-8')
-        message['From'] = Header("VersaTST", 'utf-8')
-        message['To'] = Header("接收方", 'utf-8')
-
-        subject = 'The test of VersaTST'
-        message['Subject'] = Header(subject, 'utf-8')
-        try:
-          smtpObj.sendmail(self.sender, self.receivers, message.as_string())
-        except smtplib.SMTPSenderRefused:
-            print('mail from address must be same as authorization user')
-        smtpObj.quit()
-
+        return mess
 
     def send_fail(self):
-        smtpObj = self.connect_stmp()
+
         message = MIMEText(self.message2, 'plain', 'utf-8')
-        message['From'] = Header("VersaTST", 'utf-8')
+        message['From'] = Header("发送方", 'utf-8')
+        message['To'] = Header("接收方", 'utf-8')
 
-        message['To'] = ','.join(self.receivers)
-
-        subject = 'The test of VersaTST'
+        subject = 'The results of test'
         message['Subject'] = Header(subject, 'utf-8')
         try:
-          smtpObj.sendmail(self.sender, self.receivers, message.as_string())
-        except smtplib.SMTPSenderRefused:
-            print('mail from address must be same as authorization user')
-        smtpObj.quit()
+            smtpObj = smtplib.SMTP()
+            smtpObj.connect(self.mail_host, 465)
+            smtpObj.login(self.mail_user, self.mail_pass)
+            smtpObj.sendmail(self.sender, self.receivers, message.as_string())
+            smtpObj.quit()
+
+            mess = "The message was sent successfully"
+        except smtplib.SMTPException:
+
+
+            mess = "Error,Message failed to send"
+
+        return mess
+if __name__ == '__main__':
+    t1 = STMPEmail('shiki.fu@feixitek.com').send_fail()

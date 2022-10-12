@@ -5,6 +5,7 @@ import yaml
 import time
 from prettytable.prettytable import from_db_cursor
 import pymysql
+from kraken.sshv import send_email
 
 
 
@@ -24,7 +25,10 @@ class Write_database_reliability(object):
         self.create_index_tb()
 
  
-    def create_index_tb(self): 
+    def create_index_tb(self):
+        with open(sys.path[0] + '/kraken/scenarios/spof_pvc_scenario.yaml', 'r', encoding='utf-8') as sps:
+            data = yaml.full_load(sps)
+            mail_receiver = data.get['mail_receive']
         con = pymysql.connect(host=self.host,port=self.port,user='root', passwd='passwd', db='test') # create connection object and database file
         cur = con.cursor()
 
@@ -49,6 +53,8 @@ class Write_database_reliability(object):
              check_table_name.append(row[0])
         if self.Test_name in check_table_name:
             print ("The table already exist! Please check")
+            send_email.STMPEmail(mail_receiver,
+                                 message2='VersaTST test interrupted，The table already exist! Please check').send_fail()
             sys.exit()
 
         query = '''INSERT INTO Index_Table_reliability (Test_scenario, Test_action, Test_result, Test_times, Expected_times, Test_date, Test_name) values (%s, %s, %s, %s, %s, %s, %s)'''

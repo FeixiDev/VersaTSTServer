@@ -8,6 +8,8 @@ import time
 import ctypes
 import inspect
 import telnetlib
+import yaml
+from kraken.sshv import send_email
 
 def _async_raise(tid, exctype):
     """raises the exception, performs cleanup if needed"""
@@ -253,9 +255,14 @@ class IscsiTest(object):
         self.crm_start_time = time.strftime("%Y/%m/%d %H:%M:%S", time.localtime())
 
     def test_drbd_in_used(self):
+        with open(sys.path[0] + '/kraken/scenarios/spof_pvc_scenario.yaml', 'r', encoding='utf-8') as sps:
+            data = yaml.full_load(sps)
+            mail_receiver = data.get['mail_receive']
         start_time = time.strftime("%Y/%m/%d %H:%M:%S", time.localtime())
         if len(self.conn.list_vplx_ssh) != 3:
             utils.prt_log('', f"Please make sure there are three nodes for this test", 2)
+            send_email.STMPEmail(mail_receiver,
+                                 message2='VersaTST test interrupted，resource status is not passed, exit').send_fail()
         test_times = self.config.get_test_times()
         device = self.config.get_device()
         target = self.config.get_target()

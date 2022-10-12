@@ -5,13 +5,16 @@ import yaml
 from kraken.kraken.kubernetes import client as kubecli
 from kraken.kraken.spof_pvc_scenarios import setup as spof_pvc_scenarios
 from kraken.linstorclient import client as linstorcli
+from kraken.sshv import send_email
 
 
 def test_spoc_pvc(cfg):
 
     with open(cfg, "r") as f:
         config = yaml.full_load(f)
-
+    with open(sys.path[0] + '/kraken/scenarios/spof_pvc_scenario.yaml', 'r', encoding='utf-8') as sps:
+        data = yaml.full_load(sps)
+        mail_receiver = data.get['mail_receive']
     distribution = config["kraken"].get("distribution")
     global kubeconfig_path, wait_duration
     if 'kubernetes' in str(distribution):
@@ -23,6 +26,7 @@ def test_spoc_pvc(cfg):
                 scenarios_list = scenario[scenario_type]
                 if not os.path.isfile(kubeconfig_path):
                     print('', "Cannot read the kubeconfig file at %s, please check" % kubeconfig_path,0)
+                    send_email.STMPEmail(mail_receiver,message2='VersaTST test interrupted，Cannot read the kubeconfig file, please check').send_fail()
                     #logging.error("Cannot read the kubeconfig file at %s, please check" % kubeconfig_path)
                     sys.exit(1)
                     print('', "Initializing client to talk to the Kubernetes cluster",0)
@@ -72,6 +76,7 @@ class Handle_spof_yaml():
         DB_ip = self.data['DB_IP']
         DB_port = self.data['DB_port']
         Test_name = self.data['test_name']
+        mail_receiver = ','.join(self.data['mail_receiver'])
         try:
             vip = self.data['crm_vip_name']
             linstor_controller = self.data['crm_controller_name']
@@ -94,6 +99,7 @@ class Handle_spof_yaml():
         doc['name'] = Test_name
         doc['kind'] = kind
         doc['times'] = int(runs)
+        doc['mail_receiver'] = mail_receiver
     
         if kind == 'switch_port_down':
             print('test down switch')
