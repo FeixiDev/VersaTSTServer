@@ -257,7 +257,7 @@ class IscsiTest(object):
     def test_drbd_in_used(self):
         with open(sys.path[0] + '/kraken/scenarios/spof_pvc_scenario.yaml', 'r', encoding='utf-8') as sps:
             data = yaml.full_load(sps)
-            mail_receiver = data.get['mail_receive']
+            mail_receiver = data.get('mail_receive')
         start_time = time.strftime("%Y/%m/%d %H:%M:%S", time.localtime())
         if len(self.conn.list_vplx_ssh) != 3:
             utils.prt_log('', f"Please make sure there are three nodes for this test", 2)

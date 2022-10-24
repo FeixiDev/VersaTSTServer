@@ -14,7 +14,7 @@ def test_spoc_pvc(cfg):
         config = yaml.full_load(f)
     with open(sys.path[0] + '/kraken/scenarios/spof_pvc_scenario.yaml', 'r', encoding='utf-8') as sps:
         data = yaml.full_load(sps)
-        mail_receiver = data.get['mail_receive']
+        mail_receiver = data.get('mail_receive')
     distribution = config["kraken"].get("distribution")
     global kubeconfig_path, wait_duration
     if 'kubernetes' in str(distribution):

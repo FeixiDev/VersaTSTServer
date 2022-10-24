@@ -28,7 +28,7 @@ class Write_database_reliability(object):
     def create_index_tb(self):
         with open(sys.path[0] + '/kraken/scenarios/spof_pvc_scenario.yaml', 'r', encoding='utf-8') as sps:
             data = yaml.full_load(sps)
-            mail_receiver = data.get['mail_receive']
+            mail_receiver = data.get('mail_receive')
         con = pymysql.connect(host=self.host,port=self.port,user='root', passwd='passwd', db='test') # create connection object and database file
         cur = con.cursor()
 

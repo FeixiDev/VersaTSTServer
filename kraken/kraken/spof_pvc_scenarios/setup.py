@@ -39,7 +39,7 @@ def run(scenarios_list, config):
 
     with open(sys.path[0] + '/kraken/scenarios/spof_pvc_scenario.yaml', 'r', encoding='utf-8') as sps:
         data = yaml.full_load(sps)
-        mail_receiver = data.get['mail_receive']
+        mail_receiver = data.get('mail_receive')
 
     # 检查 namespace 中是否为空
     # if kubecli.list_pvc(namespace=NAME_SPACE):
