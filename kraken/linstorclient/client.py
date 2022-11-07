@@ -8,7 +8,7 @@ from kraken.sshv import send_email
 
 with open(sys.path[0] + '/kraken/scenarios/spof_pvc_scenario.yaml', 'r', encoding='utf-8') as sps:
     data = yaml.full_load(sps)
-    mail_receiver = data.get['mail_receive']
+    mail_receiver = data.get('mail_receive')
 try:
     import linstor
 except ImportError:

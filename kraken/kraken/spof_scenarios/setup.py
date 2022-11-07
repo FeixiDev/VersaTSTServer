@@ -63,7 +63,7 @@ def run(scenarios_list, config):
 	time.sleep(20)
 	with open(sys.path[0] + '/kraken/scenarios/spof_scenario.yaml', 'r', encoding='utf-8') as sps:
 		data = yaml.full_load(sps)
-		mail_receiver = data.get['mail_receive']
+		mail_receiver = data.get('mail_receive')
 	with open(path.join(path.dirname(__file__), gomet_pod_file)) as f:
 		gomet_pod_config = yaml.safe_load(f)
 		metadata_config = gomet_pod_config["metadata"]

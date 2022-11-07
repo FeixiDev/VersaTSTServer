@@ -11,8 +11,7 @@ class STMPEmail(object):
         self.mail_user = 'github.host@feixitek.com'
         self.mail_pass = 'Githubhost1234'
         self.sender = 'github.host@feixitek.com'
-        self.receivers = receivers.strip(',').split(',')
-        self.receivers = receivers
+        self.receivers = str(receivers).strip(',').split(',')
         self.message1 = message1
         self.message2 = message2
 
